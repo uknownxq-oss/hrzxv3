@@ -105,10 +105,38 @@
             transition: all 0.3s ease;
         }
 
+        /* Glass Category Buttons */
+        .btn-outline-v3 {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .btn-outline-v3:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
         .btn-outline-v3.active {
-            background: var(--text-main);
-            color: var(--bg-dark);
-            border-color: var(--text-main);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Glass Title Effect */
+        .glass-title {
+            background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.1));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-fill-color: transparent;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            position: relative;
         }
 
         /* Search Styles */
@@ -127,7 +155,7 @@
             color: white;
             font-size: 13px;
             outline: none;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             transition: all 0.3s ease;
         }
 
@@ -201,18 +229,18 @@
 </head>
 <body id="main-body" class="pb-24">
 
+    <!-- Loading Overlay -->
     <div id="loading-overlay">
         <div class="loader-ring"></div>
         <div class="brand-font text-[10px] tracking-[0.5em] opacity-40">Synchronizing...</div>
     </div>
 
+    <!-- Navigasi -->
     <nav class="fixed top-0 w-full z-50 nav-glass">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between h-24 items-center">
                 <div class="flex items-center gap-4 cursor-pointer group" onclick="resetSearch()">
-                    <div class="w-16 h-16 flex items-center justify-center">
-                        <img src="https://img2.pixhost.to/images/7846/725407999_alip-1778591633852.jpg" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
-                    </div>
+                    <!-- Logo dipadamkan mengikut arahan -->
                     <div class="flex flex-col">
                         <span class="text-xl font-black tracking-tighter brand-font leading-none">HRZX<span style="opacity: 0.5; font-family: 'Space Grotesk'; letter-spacing: normal;"> STORE</span></span>
                         <span class="text-[8px] font-bold tracking-[0.4em] opacity-40 uppercase">v2.3 stable</span>
@@ -231,21 +259,24 @@
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <header class="pt-56 pb-24 px-6 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md opacity-60 text-[9px] font-bold uppercase tracking-[0.3em] mb-10">
                 <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Systems Operational
             </div>
-            <h1 class="text-7xl md:text-9xl font-black mb-4 leading-none tracking-tighter uppercase brand-font">
+            <h1 class="text-7xl md:text-9xl font-black mb-4 leading-none tracking-tighter uppercase brand-font glass-title">
                 HRZX
             </h1>
             <p class="text-[11px] font-bold uppercase tracking-[0.9em] opacity-30 mb-10">Update daily • Public Vault</p>
             
+            <!-- Search Menu -->
             <div class="search-container mb-12">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
                 <input type="text" id="search-input" class="search-input" placeholder="Cari prompt..." onkeyup="handleSearch()">
             </div>
 
+            <!-- Glass Category Navigation -->
             <div class="flex flex-wrap justify-center gap-3">
                 <button onclick="filterCategory('all')" id="btn-all" class="btn-outline-v3 active px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest">Semua</button>
                 <button onclick="filterCategory('girl')" id="btn-girl" class="btn-outline-v3 px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest">Girl</button>
@@ -255,6 +286,7 @@
         </div>
     </header>
 
+    <!-- Main Grid -->
     <main class="max-w-7xl mx-auto px-6 min-h-[500px]">
         <div id="prompt-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"></div>
         <div id="empty-state" class="hidden text-center py-40 card-v3 rounded-[3rem]">
@@ -265,15 +297,18 @@
         </div>
     </main>
 
+    <!-- Quotes Footer -->
     <section class="py-32 text-center overflow-hidden">
         <h2 class="text-5xl md:text-8xl font-black opacity-5 italic uppercase tracking-tighter heading-font select-none">"The one for one"</h2>
     </section>
 
+    <!-- Footer Info -->
     <footer class="pb-20 px-6 text-center">
         <div class="w-12 h-[1px] bg-gray-500/20 mx-auto mb-8"></div>
         <p class="text-[9px] font-bold uppercase tracking-[0.6em] opacity-20">&copy; 2026 HRZX Digital Archive v2.3</p>
     </footer>
 
+    <!-- Modal System -->
     <div id="modal-overlay" class="fixed inset-0 bg-black/95 z-[70] hidden items-center justify-center p-4 backdrop-blur-2xl transition-all duration-500">
         <div class="card-v3 rounded-[3rem] max-w-6xl w-full max-h-[90vh] overflow-y-auto relative border border-white/20 shadow-2xl">
             <button onclick="closeModal()" class="fixed top-8 right-8 w-12 h-12 rounded-full bg-white text-black flex items-center justify-center z-50 hover:scale-110 transition-transform font-bold shadow-xl">
@@ -464,5 +499,4 @@
     </script>
 </body>
 </html>
-
 
