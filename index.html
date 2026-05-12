@@ -177,8 +177,9 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between h-24 items-center">
                 <div class="flex items-center gap-4 cursor-pointer group" onclick="filterCategory('all')">
-                    <div class="w-12 h-12 rounded-xl overflow-hidden border border-white/20">
-                        <img src="https://img2.pixhost.to/images/7799/724651393_alip-1778424494682.jpg" alt="Logo" class="w-full h-full object-cover">
+                    <!-- Logo Updated to follow image shape -->
+                    <div class="w-16 h-16 flex items-center justify-center">
+                        <img src="https://img2.pixhost.to/images/7846/725402606_alip-1778591018544.jpg" alt="Logo" class="w-full h-full object-contain filter drop-shadow-md">
                     </div>
                     <div class="flex flex-col">
                         <span class="text-xl font-black tracking-tighter brand-font leading-none">HRZX<span style="opacity: 0.5; font-family: 'Space Grotesk'; letter-spacing: normal;"> STORE</span></span>
@@ -314,7 +315,6 @@
             const activeBtn = document.getElementById(`btn-${category}`);
             if (activeBtn) activeBtn.classList.add('active');
             
-            // Produk dibalikkan (reverse) supaya yang terbaru (id tertinggi) berada di atas
             const filtered = category === 'all' ? [...products].reverse() : products.filter(p => p.tag === category).reverse();
             
             if (filtered.length === 0) {
