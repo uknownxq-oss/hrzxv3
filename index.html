@@ -68,7 +68,6 @@
             transition: all 0.5s ease;
         }
 
-        /* Glass Effect Depth Styling */
         .card-v3 {
             background: var(--glass-v3);
             backdrop-filter: blur(25px) saturate(180%);
@@ -315,7 +314,9 @@
             const activeBtn = document.getElementById(`btn-${category}`);
             if (activeBtn) activeBtn.classList.add('active');
             
-            const filtered = category === 'all' ? products : products.filter(p => p.tag === category);
+            // Produk dibalikkan (reverse) supaya yang terbaru (id tertinggi) berada di atas
+            const filtered = category === 'all' ? [...products].reverse() : products.filter(p => p.tag === category).reverse();
+            
             if (filtered.length === 0) {
                 grid.classList.add('hidden');
                 empty.classList.remove('hidden');
@@ -405,3 +406,4 @@
     </script>
 </body>
 </html>
+
