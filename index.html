@@ -17,16 +17,16 @@
             --accent-primary: #ffffff;
             --accent-glow: rgba(255, 255, 255, 0.4);
             --bg-dark: #000000;
-            --glass-v3: rgba(0, 0, 0, 0.6);
-            --border-v3: rgba(255, 255, 255, 0.12);
+            --glass-v3: rgba(255, 255, 255, 0.03);
+            --border-v3: rgba(255, 255, 255, 0.08);
             --text-main: #ffffff;
             --text-muted: rgba(255, 255, 255, 0.4);
         }
 
         body.light-mode {
             --bg-dark: #f8fafc;
-            --glass-v3: rgba(255, 255, 255, 0.7);
-            --border-v3: rgba(0, 0, 0, 0.08);
+            --glass-v3: rgba(255, 255, 255, 0.4);
+            --border-v3: rgba(0, 0, 0, 0.05);
             --text-main: #0f172a;
             --text-muted: rgba(15, 23, 42, 0.5);
             --accent-primary: #0f172a;
@@ -68,11 +68,15 @@
             transition: all 0.5s ease;
         }
 
+        /* Glass Effect Depth Styling */
         .card-v3 {
             background: var(--glass-v3);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
             border: 1px solid var(--border-v3);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.1),
+                inset 0 0 20px rgba(255, 255, 255, 0.02);
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
@@ -80,9 +84,12 @@
         }
 
         .card-v3:hover {
-            transform: translateY(-10px);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 
+                0 30px 60px -12px rgba(0, 0, 0, 0.5),
+                inset 0 0 30px rgba(255, 255, 255, 0.05);
         }
 
         .badge-v3 {
@@ -153,8 +160,8 @@
         }
         
         .image-mask {
-            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
         }
     </style>
 </head>
@@ -198,7 +205,6 @@
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md opacity-60 text-[9px] font-bold uppercase tracking-[0.3em] mb-10">
                 <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Systems Operational
             </div>
-            <!-- Updated Heading -->
             <h1 class="text-7xl md:text-9xl font-black mb-4 leading-none tracking-tighter uppercase brand-font">
                 HRZX
             </h1>
@@ -334,7 +340,7 @@
                         <h3 class="font-bold text-sm md:text-xl mb-6 leading-tight line-clamp-2 heading-font">${p.title}</h3>
                         <div class="flex justify-between items-center pt-6 border-t border-white/5">
                             <span class="text-[7px] font-bold opacity-20 uppercase tracking-widest">ARC_${p.id.toString().padStart(3, '0')}</span>
-                            <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
+                            <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors shadow-lg">
                                 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                             </div>
                         </div>
@@ -348,7 +354,7 @@
             document.getElementById('modal-content').innerHTML = `
                 <div class="flex flex-col lg:flex-row">
                     <div class="lg:w-1/2 p-4 md:p-8">
-                        <div class="relative rounded-[2.5rem] overflow-hidden border border-white/10 h-full min-h-[400px]">
+                        <div class="relative rounded-[2.5rem] overflow-hidden border border-white/10 h-full min-h-[400px] shadow-2xl">
                             <img src="${p.image}" class="w-full h-full object-cover">
                         </div>
                     </div>
@@ -359,7 +365,7 @@
                         </div>
                         <h2 class="text-4xl md:text-6xl font-black mb-8 leading-none tracking-tighter heading-font">${p.title}</h2>
                         <p class="opacity-40 mb-12 leading-relaxed text-base font-medium">${p.description}</p>
-                        <div class="mb-12 p-8 bg-white/5 rounded-[2rem] border border-white/10">
+                        <div class="mb-12 p-8 bg-white/5 rounded-[2rem] border border-white/10 backdrop-blur-xl">
                             <div class="flex justify-between items-center mb-6">
                                 <span class="text-[9px] font-black opacity-20 uppercase">Source Prompt</span>
                                 <button onclick="copyPrompt()" class="btn-v3 px-8 py-3 rounded-xl text-[9px] uppercase tracking-widest">Salin Prompt</button>
@@ -399,4 +405,3 @@
     </script>
 </body>
 </html>
-
