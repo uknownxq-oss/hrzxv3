@@ -3,408 +3,665 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HD Kontol Snapseed Style</title>
+
+<title>HRZX STORE v3</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-body{
-    margin:0;
-    background:#111;
-    font-family:Arial,sans-serif;
-    color:white;
-    text-align:center;
-    padding:20px;
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Space+Grotesk:wght@300;500;700;800&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+
+:root{
+    --bg:#000;
+    --card:rgba(255,255,255,0.04);
+    --border:rgba(255,255,255,0.08);
+    --text:#fff;
 }
 
-.container{
-    max-width:520px;
-    margin:auto;
-    background:#1a1a1a;
-    padding:20px;
+body{
+    font-family:'Plus Jakarta Sans',sans-serif;
+    background:#000;
+    color:white;
+    overflow-x:hidden;
+
+    background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.95)),
+    url('https://img2.pixhost.to/images/7816/724906139_alip-1778485507238.jpg');
+
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+}
+
+.brand-font{
+    font-family:'Orbitron',sans-serif;
+}
+
+.glass{
+    background:rgba(255,255,255,0.03);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.card{
+    background:rgba(255,255,255,0.03);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.08);
+
+    transition:0.4s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.search{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    outline:none;
+}
+
+textarea{
+    resize:none;
+}
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:rgba(255,255,255,0.1);
     border-radius:20px;
 }
 
-input[type=file]{
-    width:100%;
-    padding:12px;
-    background:#222;
-    color:white;
-    border:none;
-    border-radius:12px;
-}
-
-img,canvas{
-    width:100%;
-    margin-top:15px;
-    border-radius:15px;
-    background:#222;
-}
-
-button{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:12px;
-    margin-top:15px;
-    font-size:16px;
-    cursor:pointer;
-}
-
-#enhance{
-    background:#2196f3;
-    color:white;
-}
-
-#download{
-    background:#00c853;
-    color:white;
-    display:none;
-}
-
-#status{
-    margin-top:10px;
-    color:#bbb;
-}
 </style>
 </head>
-<body>
 
-<div class="container">
+<body class="pb-32">
 
-<h2>📸 HD Gambar</h2>
+<!-- NAVBAR -->
 
-<input
-type="file"
-id="upload"
-accept="image/*">
+<nav class="fixed top-0 left-0 w-full z-50 glass">
 
-<img id="preview" hidden>
+<div class="max-w-7xl mx-auto px-6">
 
-<canvas id="canvas" hidden></canvas>
+<div class="h-24 flex items-center justify-between">
 
-<button id="enhance">
-HD-kan Gambar
-</button>
+<div
+onclick="secretAdmin()"
+class="cursor-pointer">
 
-<button id="download">
-Download HD
-</button>
+<h1 class="brand-font text-3xl font-black">
+HRZX STORE
+</h1>
 
-<p id="status"></p>
+<p class="text-[10px] tracking-[0.4em] opacity-40 uppercase">
+v3 archive
+</p>
 
 </div>
 
-<script>
-const upload =
-document.getElementById("upload");
+<a
+href="https://wa.me/qr/SV2TNB7Y6HSUJ1"
+target="_blank"
+class="px-6 py-3 rounded-2xl glass text-xs font-bold">
 
-const preview =
-document.getElementById("preview");
+CONTACT
 
-const canvas =
-document.getElementById("canvas");
+</a>
 
-const ctx =
-canvas.getContext("2d");
+</div>
 
-const enhanceBtn =
-document.getElementById("enhance");
+</div>
 
-const downloadBtn =
-document.getElementById("download");
+</nav>
 
-const statusText =
-document.getElementById("status");
+<!-- HERO -->
 
-let uploadedImg = null;
+<section class="pt-52 pb-24 text-center px-6">
 
-// upload gambar
-upload.addEventListener(
-"change",
-function(e){
+<h1 class="text-7xl md:text-9xl font-black brand-font mb-6">
+HRZX
+</h1>
 
-const file =
-e.target.files[0];
+<p class="uppercase tracking-[0.6em] text-xs opacity-30 mb-12">
+Digital Prompt Archive
+</p>
 
-if(!file) return;
+<div class="max-w-xl mx-auto relative">
 
-const reader =
-new FileReader();
+<i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 opacity-30"></i>
 
-reader.onload =
-function(ev){
+<input
+id="search-input"
+onkeyup="handleSearch()"
+type="text"
+placeholder="Search Prompt..."
+class="search w-full rounded-full py-4 pl-14 pr-6">
 
-uploadedImg =
-new Image();
+</div>
 
-uploadedImg.onload =
-function(){
+<div class="flex justify-center flex-wrap gap-4 mt-10">
 
-preview.src =
-ev.target.result;
+<button onclick="filterCategory('all')" id="btn-all" class="category-btn px-8 py-3 rounded-2xl glass text-xs font-bold">
+ALL
+</button>
 
-preview.hidden =
-false;
+<button onclick="filterCategory('girl')" id="btn-girl" class="category-btn px-8 py-3 rounded-2xl glass text-xs font-bold">
+GIRL
+</button>
 
-statusText.innerText =
-"Gambar berjaya upload ✅";
+<button onclick="filterCategory('boy')" id="btn-boy" class="category-btn px-8 py-3 rounded-2xl glass text-xs font-bold">
+BOY
+</button>
+
+<button onclick="filterCategory('couple')" id="btn-couple" class="category-btn px-8 py-3 rounded-2xl glass text-xs font-bold">
+COUPLE
+</button>
+
+</div>
+
+</section>
+
+<!-- GRID -->
+
+<main class="max-w-7xl mx-auto px-6">
+
+<div
+id="prompt-grid"
+class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+</div>
+
+</main>
+
+<!-- MODAL -->
+
+<div
+id="modal-overlay"
+class="hidden fixed inset-0 bg-black/90 z-[100] backdrop-blur-xl items-center justify-center p-6">
+
+<div class="glass rounded-[2rem] max-w-6xl w-full overflow-hidden relative">
+
+<button
+onclick="closeModal()"
+class="absolute top-6 right-6 z-50 w-12 h-12 rounded-full bg-white text-black">
+
+<i class="fa-solid fa-xmark"></i>
+
+</button>
+
+<div id="modal-content"></div>
+
+</div>
+
+</div>
+
+<!-- ADMIN PANEL -->
+
+<div
+id="admin-panel"
+class="hidden fixed bottom-6 right-6 z-[200] w-[380px] glass rounded-[2rem] p-6">
+
+<h2 class="text-xl font-black mb-6">
+ADMIN PANEL
+</h2>
+
+<input
+id="upload-title"
+placeholder="Title"
+class="w-full mb-3 p-4 rounded-xl bg-black border border-white/10">
+
+<input
+id="upload-category"
+placeholder="Category"
+class="w-full mb-3 p-4 rounded-xl bg-black border border-white/10">
+
+<select
+id="upload-tag"
+class="w-full mb-3 p-4 rounded-xl bg-black border border-white/10">
+
+<option value="girl">Girl</option>
+<option value="boy">Boy</option>
+<option value="couple">Couple</option>
+
+</select>
+
+<textarea
+id="upload-description"
+placeholder="Description"
+class="w-full h-28 mb-3 p-4 rounded-xl bg-black border border-white/10"></textarea>
+
+<textarea
+id="upload-prompt"
+placeholder="Prompt"
+class="w-full h-40 mb-3 p-4 rounded-xl bg-black border border-white/10"></textarea>
+
+<input
+type="file"
+id="upload-image"
+class="mb-4">
+
+<button
+onclick="uploadProduct()"
+class="w-full bg-white text-black py-4 rounded-xl font-black">
+
+UPLOAD PRODUCT
+
+</button>
+
+</div>
+
+<!-- FIREBASE -->
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+deleteDoc,
+doc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getStorage,
+ref,
+uploadBytes,
+getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+
+// ======================
+// FIREBASE CONFIG
+// ======================
+
+const firebaseConfig = {
+
+apiKey: "PASTE_API_KEY",
+
+authDomain: "YOUR_PROJECT.firebaseapp.com",
+
+projectId: "YOUR_PROJECT_ID",
+
+storageBucket: "YOUR_PROJECT.appspot.com",
+
+messagingSenderId: "XXXX",
+
+appId: "XXXX"
+
 };
 
-uploadedImg.src =
-ev.target.result;
-};
+const app = initializeApp(firebaseConfig);
 
-reader.readAsDataURL(file);
+const db = getFirestore(app);
+
+const storage = getStorage(app);
+
+
+// ======================
+// GLOBAL
+// ======================
+
+let products = [];
+
+let currentCategory = 'all';
+
+
+// ======================
+// ADMIN
+// ======================
+
+function isAdmin(){
+
+return localStorage.getItem("hrzx_admin") === "true";
+
+}
+
+let clickCount = 0;
+
+window.secretAdmin = function(){
+
+clickCount++;
+
+if(clickCount >= 5){
+
+const pass = prompt("ENTER ADMIN PASSWORD");
+
+if(pass === "HRZX2026"){
+
+localStorage.setItem("hrzx_admin","true");
+
+alert("ADMIN MODE ACTIVE");
+
+document.getElementById('admin-panel').classList.remove('hidden');
+
+}else{
+
+alert("WRONG PASSWORD");
+
+}
+
+clickCount = 0;
+
+}
+
+}
+
+
+// ======================
+// LOAD PRODUCTS
+// ======================
+
+async function loadProducts(){
+
+const querySnapshot = await getDocs(collection(db,"products"));
+
+products = [];
+
+querySnapshot.forEach((docSnap)=>{
+
+products.push({
+firebaseId:docSnap.id,
+...docSnap.data()
 });
 
-// HD button
-enhanceBtn.addEventListener(
-"click",
-function(){
+});
 
-if(!uploadedImg){
+renderGrid(products.reverse());
 
-alert(
-"Upload gambar dulu!"
+}
+
+window.onload = ()=>{
+
+loadProducts();
+
+if(isAdmin()){
+
+document.getElementById('admin-panel').classList.remove('hidden');
+
+}
+
+}
+
+
+// ======================
+// SEARCH
+// ======================
+
+window.handleSearch = function(){
+
+const query = document.getElementById('search-input').value.toLowerCase();
+
+filterCategory(currentCategory, query);
+
+}
+
+
+// ======================
+// FILTER
+// ======================
+
+window.filterCategory = function(category, query=''){
+
+currentCategory = category;
+
+let filtered = category === 'all'
+? [...products]
+: products.filter(p=>p.tag===category);
+
+if(query){
+
+filtered = filtered.filter(p=>
+
+p.title.toLowerCase().includes(query) ||
+p.description.toLowerCase().includes(query)
+
 );
+
+}
+
+renderGrid(filtered.reverse());
+
+}
+
+
+// ======================
+// RENDER
+// ======================
+
+function renderGrid(items){
+
+const grid = document.getElementById('prompt-grid');
+
+grid.innerHTML = items.map(p=>`
+
+<div class="card rounded-[2rem] overflow-hidden">
+
+<div onclick="openModal('${p.firebaseId}')" class="cursor-pointer">
+
+<div class="h-72 overflow-hidden">
+
+<img
+src="${p.image}"
+class="w-full h-full object-cover hover:scale-110 duration-700">
+
+</div>
+
+<div class="p-6">
+
+<div class="flex justify-between items-center mb-4">
+
+<span class="text-[10px] uppercase opacity-40">
+${p.category}
+</span>
+
+<span class="text-[10px] uppercase glass px-3 py-1 rounded-full">
+${p.tag}
+</span>
+
+</div>
+
+<h2 class="text-2xl font-black leading-tight">
+${p.title}
+</h2>
+
+</div>
+
+</div>
+
+${isAdmin() ? `
+
+<div class="px-6 pb-6">
+
+<button
+onclick="deleteProduct('${p.firebaseId}')"
+class="w-full bg-red-500 py-4 rounded-xl font-bold">
+
+DELETE
+
+</button>
+
+</div>
+
+` : ''}
+
+</div>
+
+`).join('');
+
+}
+
+
+// ======================
+// OPEN MODAL
+// ======================
+
+window.openModal = function(id){
+
+const p = products.find(x=>x.firebaseId===id);
+
+document.getElementById('modal-content').innerHTML = `
+
+<div class="grid lg:grid-cols-2">
+
+<div class="p-8">
+
+<img
+src="${p.image}"
+class="rounded-[2rem] w-full h-full object-cover">
+
+</div>
+
+<div class="p-10 flex flex-col">
+
+<span class="opacity-40 uppercase text-xs mb-4">
+${p.category}
+</span>
+
+<h2 class="text-5xl font-black mb-6">
+${p.title}
+</h2>
+
+<p class="opacity-60 leading-relaxed mb-10">
+${p.description}
+</p>
+
+<div class="glass rounded-[2rem] p-6 overflow-auto max-h-[400px]">
+
+<pre class="whitespace-pre-wrap text-sm leading-relaxed">${p.promptText}</pre>
+
+</div>
+
+<button
+onclick="copyPrompt()"
+class="mt-6 bg-white text-black py-4 rounded-2xl font-black">
+
+COPY PROMPT
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+document.getElementById('modal-overlay').classList.remove('hidden');
+
+document.getElementById('modal-overlay').classList.add('flex');
+
+}
+
+
+// ======================
+// CLOSE MODAL
+// ======================
+
+window.closeModal = function(){
+
+document.getElementById('modal-overlay').classList.add('hidden');
+
+document.getElementById('modal-overlay').classList.remove('flex');
+
+}
+
+
+// ======================
+// COPY PROMPT
+// ======================
+
+window.copyPrompt = function(){
+
+const text = document.querySelector('pre').innerText;
+
+navigator.clipboard.writeText(text);
+
+alert("PROMPT COPIED");
+
+}
+
+
+// ======================
+// UPLOAD PRODUCT
+// ======================
+
+window.uploadProduct = async function(){
+
+if(!isAdmin()){
+
+alert("ADMIN ONLY");
 
 return;
+
 }
 
-statusText.innerText =
-"Processing HD...";
+const title = document.getElementById('upload-title').value;
 
-setTimeout(() => {
-processImage();
-},100);
+const category = document.getElementById('upload-category').value;
+
+const tag = document.getElementById('upload-tag').value;
+
+const description = document.getElementById('upload-description').value;
+
+const promptText = document.getElementById('upload-prompt').value;
+
+const file = document.getElementById('upload-image').files[0];
+
+if(!file){
+
+alert("SELECT IMAGE");
+
+return;
+
+}
+
+const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
+
+await uploadBytes(storageRef, file);
+
+const imageUrl = await getDownloadURL(storageRef);
+
+await addDoc(collection(db,"products"),{
+
+title,
+category,
+tag,
+description,
+promptText,
+image:imageUrl,
+createdAt:Date.now()
 
 });
 
-function processImage(){
+alert("PRODUCT UPLOADED");
 
-const scale = 3;
+location.reload();
 
-canvas.width =
-uploadedImg.width
-* scale;
-
-canvas.height =
-uploadedImg.height
-* scale;
-
-canvas.hidden =
-false;
-
-// upscale
-ctx.imageSmoothingEnabled =
-true;
-
-ctx.imageSmoothingQuality =
-"high";
-
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
-
-ctx.drawImage(
-uploadedImg,
-0,
-0,
-canvas.width,
-canvas.height
-);
-
-// ACCENTUATE look
-ctx.filter =
-"contrast(135%) saturate(120%) brightness(104%)";
-
-ctx.drawImage(
-canvas,
-0,
-0
-);
-
-// structure effect
-applyStructure(
-2.2
-);
-
-// sharpen
-sharpen();
-
-statusText.innerText =
-"Siap HD ✨";
-
-downloadBtn.style.display =
-"block";
 }
 
-function applyStructure(
-strength
-){
 
-const imageData =
-ctx.getImageData(
-0,
-0,
-canvas.width,
-canvas.height
-);
+// ======================
+// DELETE
+// ======================
 
-const data =
-imageData.data;
+window.deleteProduct = async function(id){
 
-const copy =
-new Uint8ClampedArray(
-data
-);
+if(confirm("DELETE PRODUCT?")){
 
-for(
-let y=1;
-y<canvas.height-1;
-y++
-){
+await deleteDoc(doc(db,"products",id));
 
-for(
-let x=1;
-x<canvas.width-1;
-x++
-){
+location.reload();
 
-const i =
-(y*canvas.width+x)
-*4;
-
-let avgR=0;
-let avgG=0;
-let avgB=0;
-
-for(
-let ky=-1;
-ky<=1;
-ky++
-){
-
-for(
-let kx=-1;
-kx<=1;
-kx++
-){
-
-const ni =
-(
-(y+ky)
-*canvas.width
-+
-(x+kx)
-)*4;
-
-avgR +=
-copy[ni];
-
-avgG +=
-copy[ni+1];
-
-avgB +=
-copy[ni+2];
-}
 }
 
-avgR /= 9;
-avgG /= 9;
-avgB /= 9;
-
-data[i] +=
-(
-copy[i]-avgR
-)*strength;
-
-data[i+1] +=
-(
-copy[i+1]-avgG
-)*strength;
-
-data[i+2] +=
-(
-copy[i+2]-avgB
-)*strength;
-}
 }
 
-ctx.putImageData(
-imageData,
-0,
-0
-);
-}
-
-function sharpen(){
-
-const imageData =
-ctx.getImageData(
-0,
-0,
-canvas.width,
-canvas.height
-);
-
-const d =
-imageData.data;
-
-for(
-let i=0;
-i<d.length;
-i+=4
-){
-
-d[i] =
-Math.min(
-255,
-d[i]*1.08
-);
-
-d[i+1] =
-Math.min(
-255,
-d[i+1]*1.08
-);
-
-d[i+2] =
-Math.min(
-255,
-d[i+2]*1.08
-);
-}
-
-ctx.putImageData(
-imageData,
-0,
-0
-);
-}
-
-// download
-downloadBtn.addEventListener(
-"click",
-function(){
-
-const a =
-document.createElement(
-"a"
-);
-
-a.href =
-canvas.toDataURL(
-"image/png"
-);
-
-a.download =
-"HD_Image.png";
-
-a.click();
-});
 </script>
 
 </body>
