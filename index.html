@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -11,7 +11,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Space+Grotesk:wght@300;500;700;800&family=Plus+Jakarta+Sans:wght@400;700;800&family=Inter:wght@300;400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Space+Grotesk:wght@300;500;700;800&family=Plus+Jakarta+Sans:wght@400;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
         
         :root {
             --accent-primary: #ffffff;
@@ -150,14 +150,21 @@
             width: 3.5rem;
             height: 3.5rem;
             border-radius: 50%;
-            background: white;
-            color: black;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 999; 
-            transition: transform 0.3s ease;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
 
         .prompt-text-area {
@@ -167,19 +174,128 @@
             min-height: 100px;
         }
 
-        /* Form Input Styles */
-        .admin-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 12px 16px;
-            color: white;
-            outline: none;
-            transition: border-color 0.3s ease;
+        /* --- iOS Clear Transparent (Ultra-Glassmorphism) Styles --- */
+        .ios-glass-container {
+            background: rgba(20, 20, 25, 0.45);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-        .admin-input:focus {
-            border-color: rgba(255, 255, 255, 0.4);
+
+        .ios-input-group {
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .ios-input-group:focus-within {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
+        }
+
+        .ios-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            outline: none;
+            font-size: 0.95rem;
+            letter-spacing: -0.01em;
+        }
+
+        .ios-select {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            outline: none;
+            font-size: 0.95rem;
+            width: 100%;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .ios-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: -0.01em;
+        }
+
+        .ios-btn-primary {
+            background: rgba(255, 255, 255, 0.95);
+            color: #000000;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 0.75rem;
+            transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+            letter-spacing: -0.01em;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+
+        .ios-btn-primary:hover {
+            background: #ffffff;
+            transform: scale(0.99);
+        }
+
+        .ios-tab-bar {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 3px;
+            border-radius: 0.5rem;
+            display: flex;
+        }
+
+        .ios-tab-item {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 0.38rem;
+            transition: all 0.2s ease;
+            letter-spacing: -0.01em;
+        }
+
+        .ios-tab-item.active {
+            background: rgba(255, 255, 255, 0.09);
+            color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+
+        .ios-tab-item:not(.active) {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .ios-tab-item:not(.active):hover {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .ios-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 0.5px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .ios-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .ios-btn-delete {
+            background: rgba(255, 59, 48, 0.12);
+            color: #ff3b30;
+            border: 0.5px solid rgba(255, 59, 48, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .ios-btn-delete:hover {
+            background: rgba(255, 59, 48, 0.2);
+            color: #ff453a;
         }
     </style>
 </head>
@@ -251,9 +367,9 @@
     <!-- Modal System -->
     <div id="modal-overlay" class="fixed inset-0 bg-black/95 z-[70] hidden items-center justify-center p-4 backdrop-blur-2xl transition-all duration-500 overflow-y-auto">
         <button onclick="closeModal()" class="modal-close-btn hover:scale-110">
-            <i class="fa-solid fa-xmark text-xl"></i>
+            <i class="fa-solid fa-xmark text-lg"></i>
         </button>
-        <div id="modal-container" class="card-v3 rounded-[3rem] max-w-6xl w-full relative border border-white/20 shadow-2xl my-8">
+        <div id="modal-container" class="w-full relative my-8">
             <div id="modal-content"></div>
         </div>
     </div>
@@ -483,21 +599,23 @@
         function openModal(id) {
             const p = products.find(x => x.id === id);
             document.getElementById('modal-content').innerHTML = `
-                <div class="flex flex-col lg:flex-row h-full max-h-[90vh]">
-                    <div class="lg:w-1/2 p-4 md:p-8 bg-black/20">
-                        <div class="relative rounded-[2.5rem] overflow-hidden border border-white/10 h-[300px] lg:h-[600px] flex items-center justify-center">
-                            <img src="${p.image}" class="max-w-full max-h-full object-contain">
-                        </div>
-                    </div>
-                    <div class="lg:w-1/2 p-8 md:p-16 flex flex-col overflow-y-auto">
-                        <h2 class="text-3xl md:text-5xl font-black mb-6 heading-font leading-tight">${p.title}</h2>
-                        <p class="opacity-50 mb-8 leading-relaxed font-medium text-sm md:text-base">${p.description}</p>
-                        <div class="p-6 md:p-8 bg-white/5 rounded-[2rem] border border-white/10 backdrop-blur-xl">
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-[9px] font-black opacity-30 uppercase tracking-widest">Source Prompt</span>
-                                <button onclick="copyToClipboard('${p.promptText.replace(/\n/g, '\\n')}', this)" class="bg-white text-black px-6 py-2 rounded-xl text-[9px] font-bold uppercase hover:scale-105 transition-transform">Salin</button>
+                <div class="card-v3 rounded-[3rem] max-w-6xl w-full relative border border-white/20 shadow-2xl">
+                    <div class="flex flex-col lg:flex-row h-full max-h-[90vh]">
+                        <div class="lg:w-1/2 p-4 md:p-8 bg-black/20">
+                            <div class="relative rounded-[2.5rem] overflow-hidden border border-white/10 h-[300px] lg:h-[600px] flex items-center justify-center">
+                                <img src="${p.image}" class="max-w-full max-h-full object-contain">
                             </div>
-                            <div class="prompt-text-area text-[12px] font-mono opacity-80 leading-relaxed">${p.promptText}</div>
+                        </div>
+                        <div class="lg:w-1/2 p-8 md:p-16 flex flex-col overflow-y-auto">
+                            <h2 class="text-3xl md:text-5xl font-black mb-6 heading-font leading-tight">${p.title}</h2>
+                            <p class="opacity-50 mb-8 leading-relaxed font-medium text-sm md:text-base">${p.description}</p>
+                            <div class="p-6 md:p-8 bg-white/5 rounded-[2rem] border border-white/10 backdrop-blur-xl">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-[9px] font-black opacity-30 uppercase tracking-widest">Source Prompt</span>
+                                    <button onclick="copyToClipboard('${p.promptText.replace(/\n/g, '\\n')}', this)" class="bg-white text-black px-6 py-2 rounded-xl text-[9px] font-bold uppercase hover:scale-105 transition-transform">Salin</button>
+                                </div>
+                                <div class="prompt-text-area text-[12px] font-mono opacity-80 leading-relaxed">${p.promptText}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -517,18 +635,22 @@
 
         function openPasswordModal() {
             document.getElementById('modal-content').innerHTML = `
-                <div class="p-8 md:p-12 bg-[#02040a] rounded-[3rem] max-w-md mx-auto my-4 border border-white/10 text-center">
-                    <div class="mb-6">
-                        <i class="fa-solid fa-shield-halved text-amber-400 text-4xl mb-4"></i>
-                        <h2 class="brand-font text-xl font-black text-white">Pengesahan Pentadbir</h2>
-                        <p class="text-slate-500 text-[9px] uppercase tracking-widest mt-1">Sila masukkan kata laluan keselamatan</p>
+                <div class="ios-glass-container p-8 md:p-10 max-w-sm mx-auto my-12 text-center">
+                    <div class="mb-8">
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-white/10">
+                            <i class="fa-solid fa-lock-open text-white text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-bold tracking-tight text-white">Laluan Pentadbir</h2>
+                        <p class="text-white/40 text-[10px] uppercase tracking-wider mt-1">Masukkan kunci keselamatan</p>
                     </div>
                     
-                    <div class="space-y-4">
-                        <input type="password" id="adminPasswordInput" class="admin-input text-center" placeholder="Kata Laluan" onkeyup="if(event.key === 'Enter') verifyAdminPassword()">
-                        <div id="adminPasswordError" class="hidden text-red-500 text-[10px] font-bold uppercase tracking-wider mt-2">Akses ditolak! Kata laluan salah.</div>
-                        <button onclick="verifyAdminPassword()" class="w-full py-4 bg-amber-500 text-black font-black text-[10px] tracking-[0.3em] uppercase rounded-xl hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/10">
-                            Masuk
+                    <div class="space-y-5">
+                        <div class="ios-input-group px-4 py-3.5">
+                            <input type="password" id="adminPasswordInput" class="ios-input text-center text-lg" placeholder="••••••••" onkeyup="if(event.key === 'Enter') verifyAdminPassword()">
+                        </div>
+                        <div id="adminPasswordError" class="hidden text-[#ff453a] text-[10px] font-medium tracking-wide">Kata laluan tidak sah. Cuba lagi.</div>
+                        <button onclick="verifyAdminPassword()" class="w-full py-3.5 ios-btn-primary">
+                            Sambungkan
                         </button>
                     </div>
                 </div>
@@ -560,65 +682,75 @@
             let tabContent = '';
             if (tab === 'add') {
                 tabContent = `
-                    <form id="productForm" class="space-y-6">
-                        <div>
-                            <label class="block text-[10px] font-black uppercase tracking-wider mb-2 text-slate-400">Nama/Tajuk Produk</label>
-                            <input type="text" id="prodTitle" required class="admin-input" placeholder="cth: Street Style Boy Portrait">
+                    <form id="productForm" class="space-y-5">
+                        <div class="space-y-1.5">
+                            <label class="ios-label ml-1">Nama / Tajuk Produk</label>
+                            <div class="ios-input-group px-4 py-3">
+                                <input type="text" id="prodTitle" required class="ios-input" placeholder="cth: Street Style Boy Portrait">
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[10px] font-black uppercase tracking-wider mb-2 text-slate-400">Kategori (Header)</label>
-                                <input type="text" id="prodCategory" required class="admin-input" placeholder="cth: STREET SNAPSHOT">
+                            <div class="space-y-1.5">
+                                <label class="ios-label ml-1">Kategori (Header)</label>
+                                <div class="ios-input-group px-4 py-3">
+                                    <input type="text" id="prodCategory" required class="ios-input" placeholder="cth: STREET SNAPSHOT">
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-[10px] font-black uppercase tracking-wider mb-2 text-slate-400">Tag Kategori (Filter)</label>
-                                <select id="prodTag" required class="admin-input bg-[#111]">
-                                    <option value="girl">Girl</option>
-                                    <option value="boy">Boy</option>
-                                    <option value="couple">Couple</option>
-                                </select>
+                            <div class="space-y-1.5">
+                                <label class="ios-label ml-1">Tag Kategori (Filter)</label>
+                                <div class="ios-input-group px-4 py-3">
+                                    <select id="prodTag" required class="ios-select">
+                                        <option value="girl" class="bg-[#1c1c1e]">Girl</option>
+                                        <option value="boy" class="bg-[#1c1c1e]">Boy</option>
+                                        <option value="couple" class="bg-[#1c1c1e]">Couple</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-[10px] font-black uppercase tracking-wider mb-2 text-slate-400">Pautan Imej (URL)</label>
-                            <input type="url" id="prodImage" required class="admin-input" placeholder="https://img2.pixhost.to/images/...">
+                        <div class="space-y-1.5">
+                            <label class="ios-label ml-1">Pautan Imej (URL)</label>
+                            <div class="ios-input-group px-4 py-3">
+                                <input type="url" id="prodImage" required class="ios-input" placeholder="https://img2.pixhost.to/images/...">
+                            </div>
                         </div>
 
-                        <div>
-                            <label class="block text-[10px] font-black uppercase tracking-wider mb-2 text-slate-400">Deskripsi Ringkas</label>
-                            <input type="text" id="prodDesc" required class="admin-input" placeholder="cth: Potret ultra-realistik gaya jalanan...">
+                        <div class="space-y-1.5">
+                            <label class="ios-label ml-1">Deskripsi Ringkas</label>
+                            <div class="ios-input-group px-4 py-3">
+                                <input type="text" id="prodDesc" required class="ios-input" placeholder="cth: Potret ultra-realistik gaya jalanan...">
+                            </div>
                         </div>
 
-                        <div>
-                            <label class="block text-[10px] font-black uppercase tracking-wider mb-2 text-slate-400">Teks Prompt Lengkap</label>
-                            <textarea id="prodPrompt" required rows="5" class="admin-input resize-none" placeholder="Make a Picture Ultrarealistic\nSUBJECT:...\nANGLE:..."></textarea>
+                        <div class="space-y-1.5">
+                            <label class="ios-label ml-1">Teks Prompt Lengkap</label>
+                            <div class="ios-input-group px-4 py-3">
+                                <textarea id="prodPrompt" required rows="5" class="ios-input resize-none" placeholder="Make a Picture Ultrarealistic\nSUBJECT:...\nANGLE:..."></textarea>
+                            </div>
                         </div>
 
-                        <button type="submit" class="w-full py-5 bg-amber-500 text-black font-black text-[10px] tracking-[0.3em] uppercase rounded-2xl hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/10">
-                            Terbitkan Produk Baru
+                        <button type="submit" class="w-full py-4 ios-btn-primary mt-2">
+                            Terbitkan Produk
                         </button>
                     </form>
                 `;
             } else if (tab === 'manage') {
                 const sortedProducts = [...products].reverse();
                 tabContent = `
-                    <div class="space-y-4 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
+                    <div class="space-y-3.5 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
                         ${sortedProducts.map(p => `
-                            <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
-                                <div class="flex items-center gap-4">
-                                    <img src="${p.image}" class="w-12 h-12 object-cover rounded-xl border border-white/10">
+                            <div class="flex items-center justify-between p-3.5 ios-card">
+                                <div class="flex items-center gap-3.5">
+                                    <img src="${p.image}" class="w-11 h-11 object-cover rounded-lg border border-white/10">
                                     <div>
-                                        <h4 class="font-bold text-xs line-clamp-1">${p.title}</h4>
-                                        <span class="text-[9px] opacity-40 uppercase tracking-widest">${p.category}</span>
+                                        <h4 class="font-semibold text-sm text-white line-clamp-1">${p.title}</h4>
+                                        <span class="text-[10px] text-white/40 uppercase font-medium tracking-wide">${p.category}</span>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <button onclick="deleteProduct('${p.dbId || p.id}')" class="px-4 py-2 bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/30 rounded-xl text-[9px] font-black uppercase transition-all">
-                                        Padam
-                                    </button>
-                                </div>
+                                <button onclick="deleteProduct('${p.dbId || p.id}')" class="px-4 py-2 rounded-lg text-xs font-semibold ios-btn-delete transition-all">
+                                    Padam
+                                </button>
                             </div>
                         `).join('')}
                     </div>
@@ -626,16 +758,19 @@
             }
 
             document.getElementById('modal-content').innerHTML = `
-                <div class="p-8 md:p-12 bg-[#02040a] rounded-[3rem] max-w-2xl mx-auto my-4 border border-white/10 font-sans">
+                <div class="ios-glass-container p-8 md:p-10 max-w-2xl mx-auto my-4">
                     <div class="text-center mb-8">
-                        <h2 class="brand-font text-2xl md:text-3xl font-black text-amber-400">Portal Admin</h2>
-                        <p class="text-slate-500 text-[9px] uppercase tracking-widest mt-1">HRZX STORE Control Room</p>
+                        <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-3 border border-white/10">
+                            <i class="fa-solid fa-sliders text-white"></i>
+                        </div>
+                        <h2 class="text-xl font-bold tracking-tight text-white">Portal Pentadbir</h2>
+                        <p class="text-white/40 text-[10px] uppercase tracking-wider mt-0.5">Urus Arkib HRZX Store</p>
                     </div>
 
-                    <!-- Menu Navigasi Tab Admin -->
-                    <div class="flex border-b border-white/10 mb-6">
-                        <button onclick="openAdminPanel('add')" class="flex-1 py-3 text-center text-[10px] font-black uppercase tracking-wider ${tab === 'add' ? 'border-b-2 border-amber-500 text-amber-400' : 'text-slate-400 hover:text-white'}">Tambah Produk</button>
-                        <button onclick="openAdminPanel('manage')" class="flex-1 py-3 text-center text-[10px] font-black uppercase tracking-wider ${tab === 'manage' ? 'border-b-2 border-amber-500 text-amber-400' : 'text-slate-400 hover:text-white'}">Urus & Padam</button>
+                    <!-- iOS Tab Bar -->
+                    <div class="ios-tab-bar mb-6">
+                        <button onclick="openAdminPanel('add')" class="ios-tab-item ${tab === 'add' ? 'active' : ''}">Tambah Produk</button>
+                        <button onclick="openAdminPanel('manage')" class="ios-tab-item ${tab === 'manage' ? 'active' : ''}">Urus & Padam</button>
                     </div>
 
                     ${tabContent}
@@ -664,11 +799,9 @@
             showLoading(true);
             try {
                 if (isFirebaseAvailable && user) {
-                    // Mod Firestore (Canvas Mode)
                     const docRef = await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), newProduct);
                     products.push({ dbId: docRef.id, ...newProduct });
                 } else {
-                    // Mod Tempatan (Vercel Mode)
                     newProduct.dbId = 'local_' + Date.now();
                     products.push(newProduct);
                     localStorage.setItem('hrzx_local_products', JSON.stringify(products));
@@ -683,7 +816,6 @@
         }
 
         async function deleteProduct(dbId) {
-            // Menggantikan confirm() pelayar web yang disekat dengan pengesahan selamat
             const confirmed = window.confirm ? window.confirm("Adakah anda pasti mahu memadamkan produk ini?") : true;
             if (!confirmed) return;
 
@@ -691,11 +823,9 @@
             try {
                 const idStr = String(dbId);
                 if (isFirebaseAvailable && user && !idStr.startsWith('local_')) {
-                    // Padam dari Firestore (Canvas Mode)
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', dbId));
                     products = products.filter(p => p.dbId !== dbId);
                 } else {
-                    // Padam secara Tempatan (Vercel Mode)
                     products = products.filter(p => p.dbId !== dbId && p.id != dbId);
                     localStorage.setItem('hrzx_local_products', JSON.stringify(products));
                 }
