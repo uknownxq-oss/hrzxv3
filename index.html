@@ -264,12 +264,26 @@
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Initialization
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        // Firebase Configuration Fallback Guard
+        let firebaseConfig = null;
+        let app = null;
+        let auth = null;
+        let db = null;
+        let appId = 'default-app-id';
+        let isFirebaseAvailable = false;
+
+        try {
+            if (typeof window.__firebase_config !== 'undefined' && window.__firebase_config) {
+                firebaseConfig = JSON.parse(window.__firebase_config);
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                appId = typeof window.__app_id !== 'undefined' ? window.__app_id : 'default-app-id';
+                isFirebaseAvailable = true;
+            }
+        } catch (e) {
+            console.warn("Firebase config tidak dijumpai atau ralat analisis. Aplikasi akan berjalan menggunakan mod data tempatan (Local Mode).", e);
+        }
 
         let user = null;
         let products = [];
@@ -324,26 +338,53 @@
             }
         ];
 
-        // Auth Before Queries Setup
-        const initAuth = async () => {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
+        // Mulakan pengesahan dan pengambilan data jika Firebase dikonfigurasikan dengan betul
+        if (isFirebaseAvailable && auth) {
+            const initAuth = async () => {
+                try {
+                    if (typeof window.__initial_auth_token !== 'undefined' && window.__initial_auth_token) {
+                        await signInWithCustomToken(auth, window.__initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                } catch (e) {
+                    console.error("Gagal melakukan pengesahan Firebase:", e);
+                    loadLocalProducts();
+                }
+            };
+            
+            initAuth();
+
+            onAuthStateChanged(auth, (u) => {
+                user = u;
+                if (u) {
+                    fetchProducts();
+                } else {
+                    loadLocalProducts();
+                }
+            });
+        } else {
+            loadLocalProducts();
+        }
+
+        // Pengambilan data produk tempatan sebagai sandaran
+        function loadLocalProducts() {
+            const savedLocal = localStorage.getItem('hrzx_local_products');
+            if (savedLocal) {
+                products = JSON.parse(savedLocal);
             } else {
-                await signInAnonymously(auth);
+                products = [...defaultProducts];
+                localStorage.setItem('hrzx_local_products', JSON.stringify(products));
             }
-        };
-        initAuth();
+            filterCategory(currentCategory);
+        }
 
-        onAuthStateChanged(auth, (u) => {
-            user = u;
-            if (u) {
-                fetchProducts();
-            }
-        });
-
-        // Functions to fetch products from Cloud Firestore (Rule 1 & Rule 2)
+        // Pengambilan data produk daripada Firestore
         async function fetchProducts() {
-            if (!user) return;
+            if (!isFirebaseAvailable || !user) {
+                loadLocalProducts();
+                return;
+            }
             showLoading(true);
             try {
                 const querySnapshot = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'products'));
@@ -353,7 +394,6 @@
                 });
 
                 if (dbProducts.length === 0) {
-                    // Populate initial products to Firestore if empty
                     for (const p of defaultProducts) {
                         const docRef = await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), p);
                         dbProducts.push({ dbId: docRef.id, ...p });
@@ -364,7 +404,8 @@
                 products = dbProducts;
                 filterCategory(currentCategory);
             } catch (err) {
-                console.error("Error fetching products:", err);
+                console.error("Ralat memuatkan Firestore, beralih ke mod tempatan:", err);
+                loadLocalProducts();
             } finally {
                 showLoading(false);
             }
@@ -471,12 +512,47 @@
                 openAdminPanel();
                 return;
             }
-            const password = prompt("Sila masukkan kata laluan keselamatan:");
+            openPasswordModal();
+        }
+
+        function openPasswordModal() {
+            document.getElementById('modal-content').innerHTML = `
+                <div class="p-8 md:p-12 bg-[#02040a] rounded-[3rem] max-w-md mx-auto my-4 border border-white/10 text-center">
+                    <div class="mb-6">
+                        <i class="fa-solid fa-shield-halved text-amber-400 text-4xl mb-4"></i>
+                        <h2 class="brand-font text-xl font-black text-white">Pengesahan Pentadbir</h2>
+                        <p class="text-slate-500 text-[9px] uppercase tracking-widest mt-1">Sila masukkan kata laluan keselamatan</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <input type="password" id="adminPasswordInput" class="admin-input text-center" placeholder="Kata Laluan" onkeyup="if(event.key === 'Enter') verifyAdminPassword()">
+                        <div id="adminPasswordError" class="hidden text-red-500 text-[10px] font-bold uppercase tracking-wider mt-2">Akses ditolak! Kata laluan salah.</div>
+                        <button onclick="verifyAdminPassword()" class="w-full py-4 bg-amber-500 text-black font-black text-[10px] tracking-[0.3em] uppercase rounded-xl hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/10">
+                            Masuk
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-overlay').classList.replace('hidden', 'flex');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                const input = document.getElementById('adminPasswordInput');
+                if (input) input.focus();
+            }, 100);
+        }
+
+        function verifyAdminPassword() {
+            const passwordInput = document.getElementById('adminPasswordInput');
+            if (!passwordInput) return;
+            const password = passwordInput.value;
             if (password === "hrzxadmin2026") {
                 isAdminLoggedIn = true;
                 openAdminPanel();
-            } else if (password !== null) {
-                alert("Akses ditolak! Kata laluan salah.");
+            } else {
+                const errorEl = document.getElementById('adminPasswordError');
+                if (errorEl) {
+                    errorEl.classList.remove('hidden');
+                }
             }
         }
 
@@ -538,9 +614,11 @@
                                         <span class="text-[9px] opacity-40 uppercase tracking-widest">${p.category}</span>
                                     </div>
                                 </div>
-                                <button onclick="deleteProduct('${p.dbId}')" class="px-4 py-2 bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/30 rounded-xl text-[9px] font-black uppercase transition-all">
-                                    Padam
-                                </button>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="deleteProduct('${p.dbId || p.id}')" class="px-4 py-2 bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/30 rounded-xl text-[9px] font-black uppercase transition-all">
+                                        Padam
+                                    </button>
+                                </div>
                             </div>
                         `).join('')}
                     </div>
@@ -548,7 +626,7 @@
             }
 
             document.getElementById('modal-content').innerHTML = `
-                <div class="p-8 md:p-12 bg-[#02040a] rounded-[3rem] max-w-2xl mx-auto my-4 border border-white/10">
+                <div class="p-8 md:p-12 bg-[#02040a] rounded-[3rem] max-w-2xl mx-auto my-4 border border-white/10 font-sans">
                     <div class="text-center mb-8">
                         <h2 class="brand-font text-2xl md:text-3xl font-black text-amber-400">Portal Admin</h2>
                         <p class="text-slate-500 text-[9px] uppercase tracking-widest mt-1">HRZX STORE Control Room</p>
@@ -571,7 +649,6 @@
 
         async function addNewProduct(e) {
             e.preventDefault();
-            if (!user) return;
             
             const nextId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
             const newProduct = {
@@ -586,31 +663,46 @@
 
             showLoading(true);
             try {
-                const docRef = await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), newProduct);
-                products.push({ dbId: docRef.id, ...newProduct });
+                if (isFirebaseAvailable && user) {
+                    // Mod Firestore (Canvas Mode)
+                    const docRef = await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), newProduct);
+                    products.push({ dbId: docRef.id, ...newProduct });
+                } else {
+                    // Mod Tempatan (Vercel Mode)
+                    newProduct.dbId = 'local_' + Date.now();
+                    products.push(newProduct);
+                    localStorage.setItem('hrzx_local_products', JSON.stringify(products));
+                }
                 closeModal();
                 filterCategory('all');
-                alert("Produk berjaya ditambah secara kekal!");
             } catch (err) {
-                alert("Gagal menambah produk ke awan: " + err.message);
+                console.error("Gagal menambah produk:", err);
             } finally {
                 showLoading(false);
             }
         }
 
         async function deleteProduct(dbId) {
-            if (!confirm("Adakah anda pasti mahu memadamkan produk ini?")) return;
-            if (!user) return;
-            
+            // Menggantikan confirm() pelayar web yang disekat dengan pengesahan selamat
+            const confirmed = window.confirm ? window.confirm("Adakah anda pasti mahu memadamkan produk ini?") : true;
+            if (!confirmed) return;
+
             showLoading(true);
             try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', dbId));
-                products = products.filter(p => p.dbId !== dbId);
-                // Kemas kini paparan tab urus
+                const idStr = String(dbId);
+                if (isFirebaseAvailable && user && !idStr.startsWith('local_')) {
+                    // Padam dari Firestore (Canvas Mode)
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', dbId));
+                    products = products.filter(p => p.dbId !== dbId);
+                } else {
+                    // Padam secara Tempatan (Vercel Mode)
+                    products = products.filter(p => p.dbId !== dbId && p.id != dbId);
+                    localStorage.setItem('hrzx_local_products', JSON.stringify(products));
+                }
                 openAdminPanel('manage');
                 filterCategory(currentCategory);
             } catch (err) {
-                alert("Gagal memadam produk: " + err.message);
+                console.error("Gagal memadam produk:", err);
             } finally {
                 showLoading(false);
             }
@@ -634,7 +726,7 @@
             filterCategory('all');
         }
 
-        // Module function binding to globally access in DOM
+        // Ikat fungsi modul ke window secara global
         window.toggleTheme = toggleTheme;
         window.resetSearch = resetSearch;
         window.handleSearch = handleSearch;
@@ -642,13 +734,19 @@
         window.openModal = openModal;
         window.requestAdminAccess = requestAdminAccess;
         window.openAdminPanel = openAdminPanel;
+        window.openPasswordModal = openPasswordModal;
+        window.verifyAdminPassword = verifyAdminPassword;
         window.addNewProduct = addNewProduct;
         window.deleteProduct = deleteProduct;
         window.copyToClipboard = copyToClipboard;
         window.closeModal = closeModal;
 
+        // Mulakan aplikasi sebaik sahaja DOM sedia
         document.addEventListener('DOMContentLoaded', () => {
             document.body.style.opacity = '1';
+            if (!isFirebaseAvailable) {
+                loadLocalProducts();
+            }
         });
     </script>
 </body>
